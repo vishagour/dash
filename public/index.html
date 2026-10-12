@@ -1,0 +1,607 @@
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta
+      name="description"
+      content="W3Care Client and Project Management Dashboard"
+    />
+
+    <title>W3Care Clnt Dashboard</title>
+
+    <link rel="stylesheet" href="style.css" />
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+
+  <body>
+    <!-- =====================================================
+     LOGIN SCREEN
+===================================================== -->
+
+    <div id="loginScreen" class="login-screen">
+      <div class="login-background-shape shape-one"></div>
+
+      <div class="login-background-shape shape-two"></div>
+
+      <div class="login-card">
+        <!-- COMPANY LOGO -->
+
+        <div class="login-logo-wrapper">
+          <img
+            src="logo.png"
+            alt="W3Care Technologies"
+            class="company-logo login-company-logo"
+          />
+        </div>
+
+        <div class="login-heading">
+          <h1>Welcome Back</h1>
+
+          <p>Sign in to access the W3Care dashboard.</p>
+        </div>
+
+        <form id="loginForm" class="login-form">
+          <div class="form-group">
+            <label for="loginUsername"> Userna </label>
+
+            <input
+              id="loginUsername"
+              type="text"
+              placeholder="Enter your username or email"
+              autocomplete="username"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="loginPassword"> Passwrd </label>
+
+            <div class="password-wrapper">
+              <input
+                id="loginPassword"
+                type="password"
+                placeholder="Enter your password"
+                autocomplete="current-password"
+                required
+              />
+
+              <button type="button" id="togglePassword" class="password-toggle">
+                Show
+              </button>
+            </div>
+          </div>
+
+          <div id="loginError" class="login-error">
+            Invalid username or password.
+          </div>
+
+          <button type="submit" class="login-button">
+            Sign In
+
+            <span> → </span>
+          </button>
+        </form>
+
+        <div class="login-footer">W3Care Technologies Pvt. Ltd.</div>
+      </div>
+    </div>
+
+    <!-- =====================================================
+     MAIN APPLICATION
+===================================================== -->
+
+    <div id="app" class="app hidden">
+      <div id="mobileOverlay" class="mobile-overlay"></div>
+
+      <!-- =================================================
+         SIDEBAR
+    ================================================== -->
+
+      <aside id="sidebar" class="sidebar">
+        <!-- SIDEBAR BRAND -->
+
+        <div class="sidebar-brand">
+          <img
+            src="logo.png"
+            alt="W3Care Technologies"
+            class="company-logo sidebar-company-logo"
+          />
+
+          <!-- <div class="sidebar-brand-text">
+            <strong> W3Care </strong>
+
+            <span> Client Dashboard </span>
+          </div> -->
+
+          <button
+            id="sidebarClose"
+            class="sidebar-close"
+            aria-label="Close navigation"
+          >
+            ×
+          </button>
+        </div>
+
+        <!-- NAVIGATION -->
+
+        <nav class="sidebar-navigation">
+          <div class="nav-section-label">MAIN</div>
+
+          <button class="nav-item active" data-page="dashboard">
+            <span class="nav-icon">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"
+                />
+              </svg>
+            </span>
+
+            <span> Dashboard </span>
+          </button>
+
+          <button class="nav-item" data-page="projects">
+            <span class="nav-icon">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M10 4H2c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h20c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-10l-2-2z"
+                />
+              </svg>
+            </span>
+
+            <span> Projects </span>
+          </button>
+
+          <button class="nav-item" data-page="analytics">
+            <span class="nav-icon">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M5 9.2h3V19H5V9.2zM10.5 5h3v14h-3V5zM16 12h3v7h-3v-7z"
+                />
+              </svg>
+            </span>
+
+            <span> Analytics </span>
+          </button>
+        </nav>
+
+        <!-- SIDEBAR BOTTOM -->
+
+        <div class="sidebar-bottom">
+          <button id="sidebarClearFilters" class="sidebar-reset">
+            <span> ↻ </span>
+
+            Reset Filters
+          </button>
+
+          <div class="sidebar-update">
+            <span> Last Updated </span>
+
+            <strong id="sidebarLastUpdated"> — </strong>
+          </div>
+
+          <div class="sidebar-connection">
+            <span class="connection-dot"></span>
+
+            Data Connected
+          </div>
+        </div>
+      </aside>
+
+      <!-- =================================================
+         MAIN CONTENT
+    ================================================== -->
+
+      <main class="main-content">
+        <!-- HEADER -->
+
+        <header class="top-header">
+          <button id="mobileMenuButton" class="mobile-menu-button">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+
+          <div class="header-title-area">
+            <div class="breadcrumb">W3Care / Dashboard</div>
+
+            <h1 id="pageTitle">Client & Project Management Dashboard</h1>
+
+            <p id="pageDescription">
+              Complete overview of clients, projects, industries and
+              technologies.
+            </p>
+          </div>
+
+          <div class="header-actions">
+            <div id="headerLastUpdated" class="header-last-updated">
+              Last Updated: —
+            </div>
+
+            <button id="refreshButton" class="header-refresh">
+              <span id="refreshIcon"> ↻ </span>
+
+              Refresh
+            </button>
+          </div>
+        </header>
+
+        <!-- =================================================
+             DASHBOARD
+        ================================================== -->
+
+        <section id="dashboardPage" class="page active-page">
+          <!-- KPI CARDS -->
+
+          <div class="kpi-grid">
+            <!-- TOTAL -->
+
+            <div class="kpi-card">
+              <div class="kpi-icon blue">▦</div>
+
+              <div class="kpi-content">
+                <span> Total Projects </span>
+
+                <strong id="totalProjects"> 0 </strong>
+              </div>
+            </div>
+
+            <!-- ACTIVE -->
+
+            <div class="kpi-card">
+              <div class="kpi-icon green">✓</div>
+
+              <div class="kpi-content">
+                <span> Active Projects </span>
+
+                <strong id="activeProjects"> 0 </strong>
+              </div>
+            </div>
+
+            <!-- INACTIVE -->
+
+            <div class="kpi-card">
+              <div class="kpi-icon red">!</div>
+
+              <div class="kpi-content">
+                <span> Inactive Projects </span>
+
+                <strong id="inactiveProjects"> 0 </strong>
+              </div>
+            </div>
+
+            <!-- COUNTRIES -->
+
+            <div class="kpi-card">
+              <div class="kpi-icon teal">◉</div>
+
+              <div class="kpi-content">
+                <span> Countries </span>
+
+                <strong id="countryCount"> 0 </strong>
+              </div>
+            </div>
+
+            <!-- TECHNOLOGIES -->
+
+            <div class="kpi-card">
+              <div class="kpi-icon purple">◆</div>
+
+              <div class="kpi-content">
+                <span> Technologies </span>
+
+                <strong id="technologyCount"> 0 </strong>
+              </div>
+            </div>
+
+            <!-- INDUSTRIES -->
+
+            <div class="kpi-card">
+              <div class="kpi-icon orange">◈</div>
+
+              <div class="kpi-content">
+                <span> Industries </span>
+
+                <strong id="industryCount"> 0 </strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- PROJECT FILTER -->
+
+          <div class="filter-bar">
+            <div class="filter-title">
+              <span class="filter-title-icon"> ⌕ </span>
+
+              <div>
+                <strong> Project Filters </strong>
+
+                <small> Refine dashboard information </small>
+              </div>
+            </div>
+
+            <div class="filter-controls">
+              <div class="filter-control">
+                <label> Country </label>
+
+                <select id="countryFilter">
+                  <option value="">All</option>
+                </select>
+              </div>
+
+              <div class="filter-control">
+                <label> Continent </label>
+
+                <select id="continentFilter">
+                  <option value="">All</option>
+                </select>
+              </div>
+
+              <div class="filter-control">
+                <label> Industry </label>
+
+                <select id="industryFilter">
+                  <option value="">All</option>
+                </select>
+              </div>
+
+              <div class="filter-control">
+                <label> Status </label>
+
+                <select id="statusFilter">
+                  <option value="">All</option>
+                </select>
+              </div>
+
+              <div class="filter-control">
+                <label> Technology </label>
+
+                <select id="technologyFilter">
+                  <option value="">All</option>
+                </select>
+              </div>
+
+              <div class="filter-search">
+                <label> Search </label>
+
+                <div class="search-input-wrapper">
+                  <span> ⌕ </span>
+
+                  <input
+                    id="searchFilter"
+                    type="text"
+                    placeholder="Search client / project / website..."
+                  />
+                </div>
+              </div>
+
+              <button id="resetFilters" class="reset-filter-button">
+                Reset
+              </button>
+            </div>
+          </div>
+
+          <!-- SUMMARY -->
+
+          <div id="filterSummary" class="filter-summary">
+            Showing all projects
+          </div>
+
+          <!-- CHARTS -->
+
+          <div class="dashboard-grid">
+            <div class="dashboard-card">
+              <div class="card-header">
+                <h2>Projects by Country</h2>
+
+                <p>Geographic distribution of projects</p>
+              </div>
+
+              <div class="chart-container">
+                <canvas id="countryChart"></canvas>
+              </div>
+            </div>
+
+            <div class="dashboard-card">
+              <div class="card-header">
+                <h2>Project Status</h2>
+
+                <p>Current project status breakdown</p>
+              </div>
+
+              <div class="chart-container doughnut-container">
+                <canvas id="statusChart"></canvas>
+              </div>
+            </div>
+
+            <div class="dashboard-card">
+              <div class="card-header">
+                <h2>Technology Distribution</h2>
+
+                <p>Projects by technology</p>
+              </div>
+
+              <div class="chart-container">
+                <canvas id="technologyChart"></canvas>
+              </div>
+            </div>
+
+            <div class="dashboard-card">
+              <div class="card-header">
+                <h2>Industry Distribution</h2>
+
+                <p>Projects across industries</p>
+              </div>
+
+              <div class="chart-container">
+                <canvas id="industryChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =================================================
+             PROJECTS
+        ================================================== -->
+
+        <section id="projectsPage" class="page">
+          <div class="section-page-header">
+            <div>
+              <span> PROJECT DATABASE </span>
+
+              <h2>Projects</h2>
+
+              <p>
+                Browse and review all projects available in the master database.
+              </p>
+            </div>
+
+            <button id="projectsResetButton" class="secondary-button">
+              Reset Filters
+            </button>
+          </div>
+
+          <div class="project-summary-bar">
+            <div>
+              <strong id="projectResultCount"> 0 </strong>
+
+              <span> projects displayed </span>
+            </div>
+
+            <div id="projectFilterStatus" class="project-filter-status">
+              All projects
+            </div>
+          </div>
+
+          <div class="projects-table-card">
+            <div class="table-responsive">
+              <table class="projects-table">
+                <thead>
+                  <tr>
+                    <th>Client</th>
+
+                    <th>Project</th>
+
+                    <th>Technology</th>
+
+                    <th>Website</th>
+
+                    <th>Industry</th>
+
+                    <th>Country</th>
+
+                    <th>Continent</th>
+
+                    <th>Status</th>
+                  </tr>
+                </thead>
+
+                <tbody id="projectTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- =================================================
+             ANALYTICS
+        ================================================== -->
+
+        <section id="analyticsPage" class="page">
+          <div class="section-page-header">
+            <div>
+              <span> ANALYTICS </span>
+
+              <h2>Project Analytics</h2>
+
+              <p>Detailed project distribution based on the master database.</p>
+            </div>
+          </div>
+
+          <div class="analytics-kpi-grid">
+            <div class="analytics-mini-card">
+              <span> Projects </span>
+
+              <strong id="analyticsProjects"> 0 </strong>
+            </div>
+
+            <div class="analytics-mini-card">
+              <span> Technologies </span>
+
+              <strong id="analyticsTechnologies"> 0 </strong>
+            </div>
+
+            <div class="analytics-mini-card">
+              <span> Countries </span>
+
+              <strong id="analyticsCountries"> 0 </strong>
+            </div>
+
+            <div class="analytics-mini-card">
+              <span> Industries </span>
+
+              <strong id="analyticsIndustries"> 0 </strong>
+            </div>
+          </div>
+
+          <div class="analytics-grid">
+            <div class="dashboard-card">
+              <div class="card-header">
+                <h2>Technologies</h2>
+              </div>
+
+              <div class="chart-container">
+                <canvas id="analyticsTechnologyChart"></canvas>
+              </div>
+            </div>
+
+            <div class="dashboard-card">
+              <div class="card-header">
+                <h2>Status</h2>
+              </div>
+
+              <div class="chart-container doughnut-container">
+                <canvas id="analyticsStatusChart"></canvas>
+              </div>
+            </div>
+
+            <div class="dashboard-card">
+              <div class="card-header">
+                <h2>Industries</h2>
+              </div>
+
+              <div class="chart-container">
+                <canvas id="analyticsIndustryChart"></canvas>
+              </div>
+            </div>
+
+            <div class="dashboard-card">
+              <div class="card-header">
+                <h2>Countries</h2>
+              </div>
+
+              <div class="chart-container">
+                <canvas id="analyticsCountryChart"></canvas>
+              </div>
+            </div>
+
+            <div class="dashboard-card">
+              <div class="card-header">
+                <h2>Continents</h2>
+              </div>
+
+              <div class="chart-container">
+                <canvas id="analyticsContinentChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
